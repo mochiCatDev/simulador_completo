@@ -260,4 +260,25 @@ function calcularCredito() {
   `;
 }
 
+function activarValidacionEnTiempoReal() {
+  const todosLosInputs = document.querySelectorAll("input");
+
+  todosLosInputs.forEach(input => {
+    input.addEventListener("input", function () {
+
+      const valor = this.value.trim();
+      const esNumeroValido = !isNaN(this.value) && this.value !== "";
+
+      if (valor !== "" && (this.type !== "number" || esNumeroValido)) {
+        this.style.borderColor = "";
+
+        if (this.nextElementSibling && this.nextElementSibling.classList.contains("error-msg")) {
+          this.nextElementSibling.remove();
+        }
+      }
+    });
+  });
+}
+
+activarValidacionEnTiempoReal();
 pintarClientes();
