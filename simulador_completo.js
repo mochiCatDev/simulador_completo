@@ -105,18 +105,31 @@ function guardarCliente() {
     ingresos: recuperarInt("ingresos"),
     egresos: recuperarInt("egresos")
   };
-  const valores = Object.values(infoCliente);
 
-  const tieneErrores = valores.some(e => Number.isNaN(e) || e === "");
+  let formularioValido = true;
 
-  if (tieneErrores) {
+  if (isNaN(infoCliente.cedula)) {
     mostrarError("cedula", "Este campo es obligatorio.");
-    mostrarError("nombre", "Este campo es obligatorio.");
-    mostrarError("apellido", "Este campo es obligatorio.");
-    mostrarError("ingresos", "Este campo es obligatorio.");
-    mostrarError("egresos", "Este campo es obligatorio.")
-    return;
+    formularioValido = false;
   }
+  if (infoCliente.nombre === "") {
+    mostrarError("nombre", "Este campo es obligatorio.");
+    formularioValido = false;
+  }
+  if (infoCliente.apellido === "") {
+    mostrarError("apellido", "Este campo es obligatorio.");
+    formularioValido = false;
+  }
+  if (isNaN(infoCliente.ingresos)) {
+    mostrarError("ingresos", "Este campo es obligatorio.");
+    formularioValido = false;
+  }
+  if (isNaN(infoCliente.egresos)) {
+    mostrarError("egresos", "Este campo es obligatorio.");
+    formularioValido = false;
+  }
+
+  if (!formularioValido) return;
 
   const existe = buscarCliente(infoCliente.cedula);
 
@@ -133,6 +146,31 @@ function guardarCliente() {
 
   pintarClientes();
   limpiar();
+}
+
+function limpiar() {
+  mostrarTextoEnCaja("cedula", "");
+  mostrarTextoEnCaja("nombre", "");
+  mostrarTextoEnCaja("apellido", "");
+  mostrarTextoEnCaja("ingresos", "");
+  mostrarTextoEnCaja("egresos", "");
+  clienteSeleccionado = null;
+}
+
+function buscarClienteCredito() {
+  const cedula = recuperarInt("buscarCedulaCredito");
+
+  if (isNaN(cedula)) {
+    mostrarError("buscarCedulaCredito", "Rellene el campo correctamente.");
+    return;
+  }
+
+  cliente_existe = buscarCliente(cedula);
+
+  if (cliente_existe === null) {
+    alert('No existe ningún cliente con esa cedula');
+    return;
+  }
 }
 
 function limpiar() {
