@@ -1,5 +1,5 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Arial, sans-serif;
   background: #f4f6f9;
   margin: 0;
   padding: 0;
@@ -28,6 +28,7 @@ nav button {
   color: white;
   cursor: pointer;
   border-radius: 5px;
+  transition: background 0.3s;
 }
 
 nav button:hover {
@@ -42,6 +43,7 @@ section {
   background: white;
   margin-top: 20px;
   border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 section.activa {
@@ -50,15 +52,32 @@ section.activa {
 
 input,
 select {
-  padding: 8px;
-  margin: 5px;
+  padding: 10px;
+  margin: 8px 5px;
   width: 220px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input:focus {
+  border-color: #1f3c88;
+  outline: none;
 }
 
 button {
-  padding: 8px 12px;
+  padding: 10px 15px;
   margin: 5px;
   cursor: pointer;
+  border: none;
+  background: #28a745;
+  color: white;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+button:hover {
+  background: #218838;
 }
 
 table {
@@ -70,7 +89,7 @@ table {
 th,
 td {
   border: 1px solid #ccc;
-  padding: 8px;
+  padding: 10px;
   text-align: center;
 }
 
@@ -79,12 +98,37 @@ th {
   color: white;
 }
 
+.error-msg {
+  color: #dc3545;
+  font-size: 13px;
+  display: block;
+  margin-top: -4px;
+  margin-bottom: 12px;
+  margin-left: 6px;
+  font-weight: 500;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .aprobado {
   background: #d4edda;
   color: #155724;
   padding: 15px;
   border-radius: 5px;
-  font-weight: bold;
+  border-left: 5px solid #28a745;
+  font-size: 15px;
+  line-height: 1.6;
   margin-top: 15px;
 }
 
@@ -93,13 +137,50 @@ th {
   color: #721c24;
   padding: 15px;
   border-radius: 5px;
-  font-weight: bold;
+  border-left: 5px solid #dc3545;
+  font-size: 15px;
+  line-height: 1.6;
   margin-top: 15px;
 }
 
 .card {
-  background: #f1f1f1;
+  background: #f8f9fa;
   padding: 15px;
-  border-radius: 5px;
-  margin-top: 10px;
+  border-radius: 6px;
+  border: 1px solid #e3e6f0;
+  margin: 15px 0;
+}
+
+.card h2 {
+  margin-top: 0;
+  color: #333;
+  font-size: 18px;
+}
+
+.search-box,
+.form-credito {
+  margin-bottom: 20px;
+  background: #fafafa;
+  padding: 15px;
+  border-radius: 6px;
+}
+
+.btn-calcular {
+  background: #1f3c88;
+}
+
+.btn-calcular:hover {
+  background: #14275c;
+}
+
+#btnSolicitarCredito {
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  font-size: 16px;
+}
+
+#btnSolicitarCredito:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
 }
