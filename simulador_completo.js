@@ -148,15 +148,6 @@ function guardarCliente() {
   limpiar();
 }
 
-function limpiar() {
-  mostrarTextoEnCaja("cedula", "");
-  mostrarTextoEnCaja("nombre", "");
-  mostrarTextoEnCaja("apellido", "");
-  mostrarTextoEnCaja("ingresos", "");
-  mostrarTextoEnCaja("egresos", "");
-  clienteSeleccionado = null;
-}
-
 function buscarClienteCredito() {
   const cedula = recuperarInt("buscarCedulaCredito");
 
@@ -179,6 +170,7 @@ function limpiar() {
   mostrarTextoEnCaja("apellido", "");
   mostrarTextoEnCaja("ingresos", "");
   mostrarTextoEnCaja("egresos", "");
+  limpiarErrores();
   clienteSeleccionado = null;
 }
 
