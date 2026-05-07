@@ -17,6 +17,7 @@
     <button onclick="mostrarSeccion('parametros')">Parámetros</button>
     <button onclick="mostrarSeccion('clientes')">Clientes</button>
     <button onclick="mostrarSeccion('creditos')">Créditos</button>
+    <button onclick="mostrarSeccion('contacto')">Contato</button>
   </nav>
 
   <section id="parametros">
@@ -40,6 +41,7 @@
     <input type="text" id="apellido" placeholder="Apellido">
     <input type="number" id="ingresos" placeholder="Ingresos Mensuales">
     <input type="number" id="egresos" placeholder="Egresos Mensuales">
+    <input type="email" id="correo" placeholder="Correo Electronico">
 
     <br>
 
@@ -55,6 +57,7 @@
           <th>Apellido</th>
           <th>Ingresos</th>
           <th>Egresos</th>
+          <th>Correo</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -82,6 +85,9 @@
     <button id="btnSolicitarCredito" onclick="solicitarCredito()" disabled>
       Solicitar crédito
     </button>
+  </section>
+  <section id="contacto">
+    <p class="author">Desarrollado por Dilan Solorzano</p>
   </section>
 
   <script src="simulador_completo.js"></script>

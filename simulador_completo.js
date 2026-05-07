@@ -1,8 +1,8 @@
 const tablaClientes = document.getElementById("tablaClientes");
 const clientes = [
-  { cedula: 1712345678, nombre: "Juan", apellido: "Pérez", ingresos: 1200, egresos: 500 },
-  { cedula: 1723456789, nombre: "María", apellido: "Gómez", ingresos: 1500, egresos: 600 },
-  { cedula: 1734567890, nombre: "Carlos", apellido: "Ramírez", ingresos: 900, egresos: 350 }
+  { cedula: 1712345678, nombre: "Juan", apellido: "Pérez", ingresos: 1200, egresos: 500, correo: "juan@gmail.com" },
+  { cedula: 1723456789, nombre: "María", apellido: "Gómez", ingresos: 1500, egresos: 600, correo: "maria@gmail.com" },
+  { cedula: 1734567890, nombre: "Carlos", apellido: "Ramírez", ingresos: 900, egresos: 350, correo: "carlos@gmail.com" }
 ];
 let creditos = [];
 
@@ -41,6 +41,7 @@ function ocultarSecciones() {
   document.getElementById('parametros').classList.remove('activa');
   document.getElementById('clientes').classList.remove('activa');
   document.getElementById('creditos').classList.remove('activa');
+  document.getElementById('contacto').classList.remove('activa');
 }
 
 function mostrarSeccion(id) {
@@ -56,7 +57,7 @@ function guardarTasa() {
     return mostrarError("tasaInteres", "Este campo es obligatorio.");
   }
 
-  if (inputTasa > 10 && inputTasa < 20) {
+  if (inputTasa >= 10 && inputTasa <= 20) {
     tasaInteres = inputTasa;
     mostrarTexto('mensajeTasa', `✔ Tasa configurada correctamente: ${inputTasa}%`);
   } else {
@@ -74,6 +75,7 @@ function pintarClientes() {
         <td>${e.apellido}</td>
         <td>${e.ingresos}</td>
         <td>${e.egresos}</td>
+        <td>${e.correo}</td>
         <td>
           <button onclick="seleccionarCliente('${e.cedula}')">Actualizar</button>
           <button>Eliminar</button>
@@ -97,6 +99,7 @@ function seleccionarCliente(cedula) {
   mostrarTextoEnCaja("apellido", clienteSeleccionado.apellido);
   mostrarTextoEnCaja("ingresos", clienteSeleccionado.ingresos);
   mostrarTextoEnCaja("egresos", clienteSeleccionado.egresos);
+  mostrarTextoEnCaja("correo", clienteSeleccionado.correo);
 }
 
 function guardarCliente() {
@@ -105,7 +108,8 @@ function guardarCliente() {
     nombre: recuperarTexto("nombre"),
     apellido: recuperarTexto("apellido"),
     ingresos: recuperarInt("ingresos"),
-    egresos: recuperarInt("egresos")
+    egresos: recuperarInt("egresos"),
+    correo: recuperarTexto("correo")
   };
 
   let formularioValido = true;
@@ -131,6 +135,11 @@ function guardarCliente() {
     formularioValido = false;
   }
 
+  if (infoCliente.correo === "") {
+    mostrarError("correo", "Este campo es obligatorio");
+    formularioValido = false;
+  }
+
   if (!formularioValido) return;
 
   const existe = buscarCliente(infoCliente.cedula);
@@ -143,6 +152,7 @@ function guardarCliente() {
     existe.apellido = infoCliente.apellido;
     existe.ingresos = infoCliente.ingresos;
     existe.egresos = infoCliente.egresos;
+    existe.correo = infoCliente.correo;
     alert("Cliente actualizado con éxito");
   }
 
@@ -173,6 +183,7 @@ function buscarClienteCredito() {
       <p>Apellido: ${cliente_existe.apellido}</p>
       <p>Ingresos: ${cliente_existe.ingresos}</p>
       <p>Egresos: ${cliente_existe.egresos}</p>
+      <p>Correo: ${cliente_existe.correo}</p>
     `;
 }
 
@@ -182,6 +193,7 @@ function limpiar() {
   mostrarTextoEnCaja("apellido", "");
   mostrarTextoEnCaja("ingresos", "");
   mostrarTextoEnCaja("egresos", "");
+  mostrarTextoEnCaja("correo", "");
   limpiarErrores();
   clienteSeleccionado = null;
 }
