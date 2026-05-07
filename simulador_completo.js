@@ -1,17 +1,19 @@
 const tablaClientes = document.getElementById("tablaClientes");
+const tablaCreditos = document.getElementById("tablaCreditos");
 let clientes = JSON.parse(localStorage.getItem("clientes")) || [
   { cedula: 1712345678, nombre: "Juan", apellido: "Pérez", ingresos: 1200, egresos: 500, correo: "juan@gmail.com" },
   { cedula: 1723456789, nombre: "María", apellido: "Gómez", ingresos: 1500, egresos: 600, correo: "maria@gmail.com" },
   { cedula: 1734567890, nombre: "Carlos", apellido: "Ramírez", ingresos: 900, egresos: 350, correo: "carlos@gmail.com" }
 ];
-let creditos = {};
+let creditos = JSON.parse(localStorage.getItem("creditos")) || [];
 
 let tasaInteres = 15;
 let clienteSeleccionado = null;
 let cuotaCalculada = 0;
-let montoCalculated = 0;
 let plazoCalculado = 0;
 let creditoAprobado = false;
+let montoCalculado = 0;
+let plazoIngresado = 0;
 let cliente_existe = null;
 
 function mostrarError(idInput, mensaje) {
@@ -263,10 +265,10 @@ function calcularCredito() {
   let disponible = calcularDisponible(ingresos, egresos);
   let capacidad = calcularCapacidadPago(disponible);
   let interesSimple = calcularInteresSimple(MONTO_CREDITO, tasa, PLAZO_CREDITO);
-  let totalPagar = calcularTotalPagar(MONTO_CREDITO, interesSimple);
-  let cuotaMensual = parseFloat(calcularCuotaMensual(totalPagar, PLAZO_CREDITO));
+  montoCalculado = calcularTotalPagar(MONTO_CREDITO, interesSimple);
+  cuotaCalculada = parseFloat(calcularCuotaMensual(montoCalculado, PLAZO_CREDITO));
 
-  let creditoPosible = analizarCredito(capacidad, cuotaMensual);
+  let creditoPosible = analizarCredito(capacidad, cuotaCalculada);
   const mensajeFinal = aprobarCredito(creditoPosible);
 
   const contenedorResultado = document.getElementById("resultadoCredito");
@@ -281,8 +283,8 @@ function calcularCredito() {
 
   contenedorResultado.innerHTML = `
     <strong>Capacidad de pago:</strong> $${capacidad.toLocaleString()} <br>
-    <strong>Total a pagar:</strong> $${totalPagar.toLocaleString()} <br>
-    <strong>Cuota mensual:</strong> $${cuotaMensual.toLocaleString()} <br>
+    <strong>Total a pagar:</strong> $${montoCalculado.toLocaleString()} <br>
+    <strong>Cuota mensual:</strong> $${cuotaCalculada.toLocaleString()} <br>
     <strong>Resultado:</strong> ${mensajeFinal}
   `;
 }
@@ -308,15 +310,62 @@ function activarValidacionEnTiempoReal() {
 }
 
 function asignarCredito() {
-  credito = {
+  const plazo = document.getElementById("plazoCredito").value;
+  let credito = {
     cedula: clienteSeleccionado.cedula,
     nombre: clienteSeleccionado.nombre,
     apellido: clienteSeleccionado.apellido,
-    ingresos: clienteSeleccionado.ingresos,
-    egresos: clienteSeleccionado.egresos,
-    correo: clienteSeleccionado.correo
+    monto: montoCalculado,
+    tasa: tasaInteres,
+    plazo: plazo,
+    cuota: cuotaCalculada
+  };
+
+  creditos.push(credito);
+
+  localStorage.setItem("creditos", JSON.stringify(creditos));
+
+  alert("Crédito asignado con éxito");
+  pintarCreditos(creditos);
+}
+
+function buscarCreditos(cedula) {
+  return creditos.filter(e => e.cedula == cedula);
+}
+
+function pintarCreditos(arregloCreditos) {
+  let contenido = "";
+  arregloCreditos.forEach((c, index) => {
+    contenido += `
+      <tr>
+        <td>${c.cedula}</td>
+        <td>${c.nombre}</td>
+        <td>${c.apellido}</td>
+        <td>$${c.monto}</td>
+        <td>${c.tasa}%</td>
+        <td>${c.plazo} años</td>
+        <td>$${c.cuota}</td>
+        <td>
+          <button onclick="eliminarCredito(${index})">Eliminar</button>
+        </td>
+      </tr>
+    `;
+  });
+  document.getElementById("tablaCreditos").innerHTML = contenido;
+}
+
+function eliminarCredito(indice) {
+  const confirmar = confirm("¿Estás seguro de que deseas eliminar este registro de crédito?");
+
+  if (confirmar) {
+    creditos.splice(indice, 1);
+    localStorage.setItem("creditos", JSON.stringify(creditos));
+
+    pintarCreditos(creditos);
+    alert("Crédito eliminado correctamente.");
   }
 }
 
 activarValidacionEnTiempoReal();
 pintarClientes();
+pintarCreditos(creditos);
