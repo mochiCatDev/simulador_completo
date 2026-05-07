@@ -1,5 +1,5 @@
 const tablaClientes = document.getElementById("tablaClientes");
-const clientes = JSON.parse(localStorage.getItem("clientes")) || [
+let clientes = JSON.parse(localStorage.getItem("clientes")) || [
   { cedula: 1712345678, nombre: "Juan", apellido: "Pérez", ingresos: 1200, egresos: 500, correo: "juan@gmail.com" },
   { cedula: 1723456789, nombre: "María", apellido: "Gómez", ingresos: 1500, egresos: 600, correo: "maria@gmail.com" },
   { cedula: 1734567890, nombre: "Carlos", apellido: "Ramírez", ingresos: 900, egresos: 350, correo: "carlos@gmail.com" }
@@ -78,7 +78,7 @@ function pintarClientes() {
         <td>${e.correo}</td>
         <td>
           <button onclick="seleccionarCliente('${e.cedula}')">Actualizar</button>
-          <button>Eliminar</button>
+          <button onclick="eliminarCliente('${e.cedula}')">Eliminar</button>
         </td>
       </tr>
     `;
@@ -157,9 +157,19 @@ function guardarCliente() {
   }
 
   pintarClientes();
-  // localStorage.setItem("clientes", JSON.stringify(clientes));
   localStorage.setItem("clientes", JSON.stringify(clientes));
   limpiar();
+}
+
+function eliminarCliente(cedula) {
+  const confirmar = confirm(`¿Estás seguro de que deseas eliminar al cliente con cédula ${cedula}?`);
+
+  if (!confirmar) return;
+
+  clientes = clientes.filter(c => c.cedula != cedula);
+  localStorage.setItem("clientes", JSON.stringify(clientes));
+  pintarClientes();
+  alert("Cliente eliminado con éxito");
 }
 
 function buscarClienteCredito() {
