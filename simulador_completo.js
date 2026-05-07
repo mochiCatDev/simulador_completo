@@ -354,6 +354,24 @@ function pintarCreditos(arregloCreditos) {
   document.getElementById("tablaCreditos").innerHTML = contenido;
 }
 
+function buscarCreditosCliente() {
+  const inputBusqueda = document.getElementById("buscarCedulaListado");
+  const cedula = inputBusqueda.value;
+
+  if (cedula === "") {
+    alert("Por favor, ingresa una cédula para buscar.");
+    return;
+  }
+
+  const creditosFiltrados = buscarCreditos(cedula);
+
+  if (creditosFiltrados.length === 0) {
+    alert("No se encontraron créditos para esa cédula.");
+  }
+
+  pintarCreditos(creditosFiltrados);
+}
+
 function eliminarCredito(indice) {
   const confirmar = confirm("¿Estás seguro de que deseas eliminar este registro de crédito?");
 
