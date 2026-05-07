@@ -372,6 +372,11 @@ function buscarCreditosCliente() {
   pintarCreditos(creditosFiltrados);
 }
 
+function verTodosLosCreditos() {
+  document.getElementById("buscarCedulaListado").value = "";
+  pintarCreditos(creditos);
+}
+
 function eliminarCredito(indice) {
   const confirmar = confirm("¿Estás seguro de que deseas eliminar este registro de crédito?");
 
