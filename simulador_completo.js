@@ -8,6 +8,8 @@ let clientes = JSON.parse(localStorage.getItem("clientes")) || [
 let creditos = JSON.parse(localStorage.getItem("creditos")) || [];
 
 let tasaInteres = 15;
+let montoMaximoPermitido = parseFloat(localStorage.getItem("montoMaximo")) || 2000;
+let montoMaximoPermitidoLocal = montoMaximoPermitido.toLocaleString();
 let clienteSeleccionado = null;
 let cuotaCalculada = 0;
 let plazoCalculado = 0;
@@ -66,6 +68,21 @@ function guardarTasa() {
   } else {
     mostrarTexto('mensajeTasa', '❌ La tasa debe estar entre 10% y 20%');
   }
+}
+
+function guardarMontoMaximo() {
+  limpiarErrores();
+  const inputMontoMax = recuperarInt('montoMaximo');
+
+  if (isNaN(inputMontoMax) || inputMontoMax <= 0) {
+    return mostrarError("montoMaximo", "Ingrese un monto máximo válido y mayor a 0.");
+  }
+
+  montoMaximoPermitido = inputMontoMax;
+  localStorage.setItem("montoMaximo", montoMaximoPermitido);
+  
+  montoMaximoPermitidoLocal = montoMaximoPermitido.toLocaleString();
+  mostrarTexto('mensajeTasa', `✔ Monto máximo configurado correctamente: $${montoMaximoPermitidoLocal}`);
 }
 
 function pintarClientes() {
@@ -248,8 +265,9 @@ function calcularCredito() {
   if (isNaN(MONTO_CREDITO) || MONTO_CREDITO <= 0) {
     mostrarError("montoCredito", "El monto debe ser mayor a 0.");
     validacionExitosa = false;
-  } else if (MONTO_CREDITO > 50000) {
-    mostrarError("montoCredito", "El monto no puede superar los $50,000.");
+  } else if (MONTO_CREDITO > montoMaximoPermitido) {
+    mostrarError("montoCredito", `El monto no puede superar los ${montoMaximoPermitidoLocal}`);
+    document.getElementById("montoCredito").value = "";
     validacionExitosa = false;
   }
 
@@ -258,6 +276,7 @@ function calcularCredito() {
     validacionExitosa = false;
   } else if (PLAZO_CREDITO > 10) {
     mostrarError("plazoCredito", "El plazo máximo es de 10 años.");
+    document.getElementById("plazoCredito").value = "";
     validacionExitosa = false;
   }
 
