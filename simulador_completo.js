@@ -45,7 +45,7 @@ function ocultarSecciones() {
   document.getElementById('parametros').classList.remove('activa');
   document.getElementById('clientes').classList.remove('activa');
   document.getElementById('creditos').classList.remove('activa');
-  document.getElementById('contacto').classList.remove('activa');
+  document.getElementById('acercaDe').classList.remove('activa');
   document.getElementById('registro').classList.remove('activa');
 }
 
